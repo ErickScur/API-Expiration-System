@@ -1,21 +1,29 @@
 const express = require('express');
 const routes = express.Router();
 const ProductController = require('./controllers/ProductController');
-const Product = require('./models/Product');
 const ProviderController = require('./controllers/ProviderController');
-const Provider = require('./models/Provider');
+const UserController = require('./controllers/UserController');
+const auth = require('./authentication');
 
-routes.post('/provider',ProviderController.store);
-routes.get('/providers',ProviderController.index);
-routes.get('/provider/:id',ProviderController.show);
-routes.put('/provider/:id', ProviderController.update);
-routes.delete('/provider/:id', ProviderController.destroy);
+routes.post('/provider',auth, ProviderController.store);
+routes.get('/providers',auth, ProviderController.index);
+routes.get('/provider/:id',auth, ProviderController.show);
+routes.put('/provider/:id',auth, ProviderController.update);
+routes.delete('/provider/:id',auth, ProviderController.destroy);
 
-routes.get('/products', ProductController.index);
-routes.get('/product/:id', ProductController.show);
-routes.get('/product/barcode/:barcode', ProductController.findByBarcode);
-routes.get('/products/provider/:providerId', ProductController.findByProviderId);
-routes.post('/product', ProductController.store);
-routes.put('/product/:id', ProductController.update);
+routes.get('/products',auth, ProductController.index);
+routes.get('/product/:id',auth, ProductController.show);
+routes.get('/product/barcode/:barcode',auth, ProductController.findByBarcode);
+routes.get('/products/provider/:providerId',auth, ProductController.findByProviderId);
+routes.post('/product',auth, ProductController.store);
+routes.put('/product/:id',auth, ProductController.update);
+routes.delete('/product/:id',auth, ProductController.destroy);
+
+routes.get('/users',auth, UserController.index);
+routes.post('/user',auth, UserController.store);
+routes.get('/user/:id',auth, UserController.show);
+routes.put('/user/:id',auth, UserController.update);
+routes.delete('/user/:id',auth, UserController.destroy);
+routes.post('/auth', UserController.auth);
 
 module.exports = routes;
