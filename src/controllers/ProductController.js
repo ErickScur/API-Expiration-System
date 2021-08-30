@@ -8,12 +8,13 @@ module.exports = {
         return res.json(products);
     },
     async store (req,res){
-        const {name, providerId} = req.body;
+        const {name, providerId, barcode} = req.body;
         let expirationDate = new Date();
         const product = await Product.create({
             name:name,
             expirationDate: expirationDate,
-            providerId: providerId
+            providerId: providerId,
+            barcode:barcode
         });
         return res.json(product);
     },
@@ -35,6 +36,16 @@ module.exports = {
             where:{
                 id:id
             }})
+        return res.json(product);
+    },
+    async findByBarcode (req,res){
+        let barcode = req.params.barcode;
+        const product = await Product.findOne({where:{barcode:barcode}});
+        return res.json(product);
+    },
+    async findByProviderId(req,res){
+        let providerId = req.params.providerId;
+        const product = await Product.findAll({where:{providerId:providerId}});
         return res.json(product);
     }
 }

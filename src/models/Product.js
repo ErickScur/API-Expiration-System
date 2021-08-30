@@ -11,6 +11,10 @@ const Product = connection.define('product',{
         type: Sequelize.DATE,
         allowNull: false
     },
+    barcode:{
+        type: Sequelize.STRING,
+        allowNull: true
+    }
 }); 
 
 Provider.hasMany(Product);

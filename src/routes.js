@@ -13,8 +13,9 @@ routes.delete('/provider/:id', ProviderController.destroy);
 
 routes.get('/products', ProductController.index);
 routes.get('/product/:id', ProductController.show);
+routes.get('/product/barcode/:barcode', ProductController.findByBarcode);
+routes.get('/products/provider/:providerId', ProductController.findByProviderId);
 routes.post('/product', ProductController.store);
 routes.put('/product/:id', ProductController.update);
-
 
 module.exports = routes;
