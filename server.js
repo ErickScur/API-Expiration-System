@@ -21,9 +21,9 @@ app.use(bodyParser.json());
 
 app.use(routes);
 
-let server = app.listen(8080, localIpV4Address(), ()=>{
+let server = app.listen(8000, localIpV4Address(), ()=>{
     console.log("Servidor rodando!");
     localIpV4Address().then((ip)=>{
-        console.log(`Servidor rodando em: http://${ip}:8080`);
+        console.log(`Servidor rodando em: http://${ip}:8000`);
     })
 }); 

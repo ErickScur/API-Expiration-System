@@ -7,7 +7,6 @@ function auth(req,res,next){
     if(authToken!=undefined){
         let bearer = authToken.split(' ');
         let token = bearer[1];
-
         jwt.verify(token,JWTSecret,(err, data)=>{
             if(err){
                 res.status(401)

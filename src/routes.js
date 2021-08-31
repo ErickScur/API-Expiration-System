@@ -27,3 +27,4 @@ routes.delete('/user/:id',auth, UserController.destroy);
 routes.post('/auth', UserController.auth);
 
 module.exports = routes;
+

@@ -8,45 +8,63 @@ module.exports = {
         return res.json(users);
     },
     async store (req,res){
-        let login = req.body.login;
-        let password = req.body.password;
-        let admin = req.body.admin;
+        let {login,password,admin} = req.body;
         let loggedUser = req.loggedUser;
         if(loggedUser.admin == 0){
             res.status(401);
             res.json({err:"Permission Denied!"});
         }else{
-            const user = await User.create({
-                login:login,
-                password:password,
-                admin:admin
-            });
-            return res.json(user);
+            if(admin!=undefined && login!=undefined && admin!=undefined){
+                let findUser = User.findOne({where:{login:login}});
+                if(findUser==undefined){
+                    const user = await User.create({
+                        login:login,
+                        password:password,
+                        admin:admin
+                    });
+                    res.status(200);
+                    return res.json(user);
+                }else{
+                    res.status(400);
+                    res.json({err:"Login already in use!"}); 
+                }
+            }else{
+                res.status(400);
+                res.json({err:"400 Bad Request!"});
+            }           
         }
     },
     async show (req,res){
         let id = req.params.id;
         const user = await User.findOne({where:{id:id}});
-        return res.json(user);
+        if(user!=undefined){
+            res.status(200);
+            return res.json(user);
+        }else{
+            res.status(404);
+            res.json({err:"404 Not Found!"})
+        }
     },
     async update (req,res){
-        let login = req.body.login;
-        let password = req.body.password;
-        let admin = req.body.admin;
+        let {login,password,admin} = req.body;
         let id = req.params.id;
         let loggedUser = req.loggedUser;
         if(loggedUser.admin == 0){
             res.status(401);
             res.json({err:"Permission Denied!"});
         }else{
-            const user = await User.update({
-                login:login,
-                password:password,
-                admin:admin
-            },{where:{id:id}});
-            return res.json(user);
-        }
-        
+            if(admin!=undefined){
+                const user = await User.update({
+                    login:login,
+                    password:password,
+                    admin:admin
+                },{where:{id:id}});
+                return res.json(user);
+            }else{
+                res.status(400);
+                res.json({err:"400 Bad Request!"});
+            }
+        }   
     },
     async destroy(req,res){
         let id = req.params.id;
@@ -61,7 +79,6 @@ module.exports = {
             }})
             return res.json(user); 
         }
-
     },
     async auth(req,res){
         let {login, password} = req.body;
@@ -77,8 +94,7 @@ module.exports = {
                             res.status(200);
                             res.json({token:token});
                         }
-                    });
-                    
+                    });            
                 }else{
                     res.status(401);
                     res.json({err:"Invalid Password"});
