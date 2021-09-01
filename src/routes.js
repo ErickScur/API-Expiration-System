@@ -25,6 +25,7 @@ routes.get('/user/:id',auth, UserController.show);
 routes.put('/user/:id',auth, UserController.update);
 routes.delete('/user/:id',auth, UserController.destroy);
 routes.post('/auth', UserController.auth);
+routes.put('/changepw',auth, UserController.changePassword);
 
 module.exports = routes;
 

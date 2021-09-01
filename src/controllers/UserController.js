@@ -107,5 +107,24 @@ module.exports = {
             res.status(400);
             res.json({err:"Invalid Login!"});
         }
+    },
+    async changePassword(req,res){
+        let {password, newPassword} = req.body;
+        let loggedUser = req.loggedUser;
+        let login = loggedUser.login;
+        const user = await User.findOne({where:{login:login}});
+        if(user!=undefined){
+            if(user.password == password){
+                const updatedUser = await User.update({password:newPassword},{where:{login:login}});
+                return res.json(updatedUser);
+            }else{
+                res.status(401);
+                res.json({err:"Invalid Password"});
+            }
+        }else{
+            res.status(404);
+            res.json({err:"Login doesn`t exist!"});
+        }
+        
     }
 }
