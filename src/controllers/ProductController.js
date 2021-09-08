@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const Provider = require('../models/Provider');
 
 module.exports = {
     async index (req,res){
@@ -8,13 +9,15 @@ module.exports = {
         return res.json(products);
     },
     async store (req,res){
-        const {name, providerId, barcode} = req.body;
-        let expirationDate = new Date();
+        const {name, providerId, barcode, expirationDate} = req.body;
+        let provider = await Provider.findOne({where:{id:providerId}});
+        let providerName = provider.name;
         const product = await Product.create({
             name:name,
             expirationDate: expirationDate,
             providerId: providerId,
-            barcode:barcode
+            barcode:barcode,
+            providerName:providerName
         });
         return res.json(product);
     },

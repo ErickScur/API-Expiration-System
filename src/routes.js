@@ -28,4 +28,3 @@ routes.post('/auth', UserController.auth);
 routes.put('/changepw',auth, UserController.changePassword);
 
 module.exports = routes;
-

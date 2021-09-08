@@ -14,6 +14,10 @@ const Product = connection.define('product',{
     barcode:{
         type: Sequelize.STRING,
         allowNull: true
+    },
+    providerName:{
+        type: Sequelize.STRING,
+        allowNull: false
     }
 }); 
 

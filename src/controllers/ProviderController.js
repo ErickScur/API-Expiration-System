@@ -7,6 +7,11 @@ module.exports = {
     },
     async store (req,res){
         let name = req.body.name;
+        const providerAlready = await Provider.findOne({where:{name:name}});
+        if(providerAlready){
+            res.status(400);
+            return res.json({err:"Provider alredy exists"});
+        }
         const provider = await Provider.create({
             name:name
         });
